@@ -1,33 +1,30 @@
-import { Provider, useSelector } from 'react-redux';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+// src/App.js
+import './App.css';
+import { Provider } from 'react-redux';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import store from './stores/store';                 // ✔ path matches file
+import store from './stores/store';
 import Authentication from './components/authentication';
 import TaskBoard from './components/TaskBoard';
-import './App.css';
-
-/* ---------- PrivateRoute wrapper ---------- */
-function PrivateRoute({ children }) {
-  const token = useSelector((s) => s.auth.token);
-  return token ? children : <Navigate to="/login" replace />;
-}
 
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          {/* Auth pages */}
-          <Route path="/login/*"    element={<Authentication />} />
-          <Route path="/register/*" element={<Authentication />} />
+      <HashRouter>
+        <div className="App">
+          <Routes>
+            {/* Public auth routes */}
+            <Route path="/signin/*" element={<Authentication />} />
+            <Route path="/signup/*" element={<Authentication />} />
 
-          {/* Protected home */}
-          <Route path="/" element={<PrivateRoute><TaskBoard /></PrivateRoute>} />
+            {/* Main board */}
+            <Route path="/" element={<TaskBoard />} />
 
-          {/* Catch‑all → login */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </BrowserRouter>
+            {/* Catch-all → signin */}
+            <Route path="*" element={<Navigate to="/signin" replace />} />
+          </Routes>
+        </div>
+      </HashRouter>
     </Provider>
   );
 }
