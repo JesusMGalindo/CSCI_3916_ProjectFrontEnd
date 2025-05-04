@@ -2,8 +2,8 @@
 import constants from '../constants/actionTypes';
 
 const initialState = {
-  token: localStorage.getItem('jwt') || null,
-  username: null
+  loggedIn: Boolean(localStorage.getItem('token')),
+  username: localStorage.getItem('username') || ''
 };
 
 export default function authReducer(state = initialState, action) {
@@ -11,13 +11,11 @@ export default function authReducer(state = initialState, action) {
     case constants.USER_LOGGEDIN:
       return {
         ...state,
-        token: action.payload.token,
+        loggedIn: true,
         username: action.payload.username
       };
-
     case constants.USER_LOGOUT:
-      return { token: null, username: null };
-
+      return { ...state, loggedIn: false, username: '' };
     default:
       return state;
   }

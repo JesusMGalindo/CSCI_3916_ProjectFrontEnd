@@ -5,12 +5,15 @@ const Constants = {
     USER_LOGOUT:   'USER_LOGOUT',
   
     /* Task CRUD */
-    FETCH_TASKS:  'FETCH_TASKS',   // list all tasks
-    FETCH_TASK:   'FETCH_TASK',    // fetch one by id (unused yet)
-    SET_TASK:     'SET_TASK',      // set selected task in UI
-    ADD_TASK:     'ADD_TASK',
-    UPDATE_TASK:  'UPDATE_TASK',
-    DELETE_TASK:  'DELETE_TASK'
+    FETCH_TASKS:   'FETCH_TASKS',    // list
+    FETCH_TASK:    'FETCH_TASK',     // single
+    SET_TASK:      'SET_TASK',       // select in UI
+    ADD_TASK:      'ADD_TASK',
+    UPDATE_TASK:   'UPDATE_TASK',
+    DELETE_TASK:   'DELETE_TASK',
+  
+    /* Overdue */
+    FETCH_OVERDUE: 'FETCH_OVERDUE'
   };
   
   export default Constants;

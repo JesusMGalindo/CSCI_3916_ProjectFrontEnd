@@ -2,22 +2,20 @@
 import constants from '../constants/actionTypes';
 
 const initialState = {
-  list: [],           // all tasks
-  selected: null      // task currently opened in a modal, etc.
+  list: [],
+  selected: null,
+  overdue: []
 };
 
 export default function taskReducer(state = initialState, action) {
   switch (action.type) {
     case constants.FETCH_TASKS:
-      return { ...state, list: action.payload };
-
+      return { ...state, list: action.payload, selected: action.payload[0] || null };
     case constants.SET_TASK:
     case constants.FETCH_TASK:
       return { ...state, selected: action.payload };
-
     case constants.ADD_TASK:
       return { ...state, list: [...state.list, action.payload] };
-
     case constants.UPDATE_TASK:
       return {
         ...state,
@@ -29,7 +27,6 @@ export default function taskReducer(state = initialState, action) {
             ? action.payload
             : state.selected
       };
-
     case constants.DELETE_TASK:
       return {
         ...state,
@@ -39,7 +36,8 @@ export default function taskReducer(state = initialState, action) {
             ? null
             : state.selected
       };
-
+    case constants.FETCH_OVERDUE:
+      return { ...state, overdue: action.payload };
     default:
       return state;
   }

@@ -2,36 +2,34 @@
 import axios from 'axios';
 import constants from '../constants/actionTypes';
 
-// API base comes from .env  (fallback to localhost)
 const API = process.env.REACT_APP_API_URL;
 
-export const login = (username, password) => async (dispatch) => {
-  try {
+function userLoggedIn(username, token) {
+  return {
+    type: constants.USER_LOGGEDIN,
+    payload: { username, token },
+  };
+}
+
+export function logout() {
+  localStorage.removeItem('username');
+  localStorage.removeItem('token');
+  return { type: constants.USER_LOGOUT };
+}
+
+export function login(username, password) {
+  return async (dispatch) => {
     const res = await axios.post(`${API}/signin`, { username, password });
-    const token = res.data.token.split(' ')[1]; // strip "JWT "
-    localStorage.setItem('jwt', token);
+    const token = res.data.token.split(' ')[1];
+    localStorage.setItem('username', username);
+    localStorage.setItem('token', token);
+    dispatch(userLoggedIn(username, token));
+  };
+}
 
-    dispatch({
-      type: constants.USER_LOGGEDIN,
-      payload: { token, username }
-    });
-  } catch (err) {
-    console.error(err);
-    // TODO: dispatch failure
-  }
-};
-
-export const register = (user) => async (dispatch) => {
-  try {
-    await axios.post(`${API}/signup`, user);
-    // auto‑login
-    dispatch(login(user.username, user.password));
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-export const logout = () => (dispatch) => {
-  localStorage.removeItem('jwt');
-  dispatch({ type: constants.USER_LOGOUT });
-};
+export function register({ name, username, email, password }) {
+  return async (dispatch) => {
+    await axios.post(`${API}/signup`, { name, username, email, password });
+    return dispatch(login(username, password));
+  };
+}

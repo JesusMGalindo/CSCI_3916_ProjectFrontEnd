@@ -1,30 +1,78 @@
 // src/components/Register.js
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { register } from '../actions/authActions';
-import { Navigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Form, Button } from 'react-bootstrap';
 
 export default function Register() {
+  const [details, setDetails] = useState({
+    name: '',
+    username: '',
+    email: '',
+    password: ''
+  });
+
   const dispatch = useDispatch();
-  const loggedIn  = useSelector((s) => Boolean(s.auth.token));
 
-  const [form, setForm] = useState({ name:'', username:'', email:'', password:'' });
-  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const onSubmit = (e) => { e.preventDefault(); dispatch(register(form)); };
+  const updateDetails = (e) => {
+    setDetails({
+      ...details,
+      [e.target.id]: e.target.value
+    });
+  };
 
-  if (loggedIn) return <Navigate to="/" />;
+  const submit = (e) => {
+    e.preventDefault();
+    dispatch(register(details));   // calls our thunk which POSTs to /signup
+  };
 
   return (
-    <main className="register">
-      <h2>Create Account</h2>
-      <form onSubmit={onSubmit}>
-        <input name="name"     placeholder="Full name" value={form.name}     onChange={onChange} />
-        <input name="username" placeholder="Username"  value={form.username} onChange={onChange} />
-        <input name="email"    placeholder="Email"     value={form.email}    onChange={onChange} />
-        <input type="password" name="password" placeholder="Password" value={form.password} onChange={onChange} />
-        <button type="submit">Register</button>
-      </form>
-      <p>Have an account? <Link to="/login">Login</Link></p>
-    </main>
+    <div className="register-container d-flex justify-content-center align-items-center vh-100">
+      <Form onSubmit={submit} className="register-form bg-light p-4 rounded shadow">
+        <Form.Group controlId="name" className="mb-3">
+          <Form.Label>Full Name</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Your name"
+            value={details.name}
+            onChange={updateDetails}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="username" className="mb-3">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Choose a username"
+            value={details.username}
+            onChange={updateDetails}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="email" className="mb-3">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="you@example.com"
+            value={details.email}
+            onChange={updateDetails}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="password" className="mb-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={details.password}
+            onChange={updateDetails}
+          />
+        </Form.Group>
+
+        <Button type="submit" variant="primary" className="w-100">
+          Register
+        </Button>
+      </Form>
+    </div>
   );
 }
