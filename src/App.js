@@ -6,7 +6,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import store from './stores/store';
 import Authentication from './components/authentication';
 import TaskBoard from './components/TaskBoard';
-import TaskDetail from './components/TaskDetail';
+import TaskDetail from './components/taskDetail';
 import OverdueList from './components/overdue';
 
 function App() {
