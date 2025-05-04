@@ -1,7 +1,7 @@
 // src/components/Authentication.js
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './Login';
-import Register from './Register';
+import Login from './login';
+import Register from './register';
 
 export default function Authentication() {
   return (
