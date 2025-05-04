@@ -3,7 +3,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import store from './store';
+import store from './stores/store';
 import Authentication from './components/authentication';
 import TaskBoard from './components/TaskBoard';
 import TaskDetail from './components/TaskDetail';
