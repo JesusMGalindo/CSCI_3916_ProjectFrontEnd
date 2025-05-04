@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav, Button } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Login from './Login';
-import Register from './Register';
+import Login from './login';
+import Register from './register';
 import { login, register, logout } from '../actions/authActions';
 
 export default function Authentication() {
