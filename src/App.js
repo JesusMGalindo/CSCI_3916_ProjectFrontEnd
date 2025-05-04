@@ -7,7 +7,7 @@ import store from './stores/store';
 import Authentication from './components/authentication';
 import TaskBoard from './components/TaskBoard';
 import TaskDetail from './components/TaskDetail';
-import OverdueList from './components/OverdueList';
+import OverdueList from './components/overdue';
 
 function App() {
   return (
