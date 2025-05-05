@@ -3,29 +3,44 @@ import constants from '../constants/actionTypes';
 
 const API = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
-// Helper to build auth headers
+// Build headers for authenticated requests
 const authHeaders = () => ({
   'Content-Type': 'application/json',
   Authorization: `JWT ${localStorage.getItem('token')}`
 });
 
-// ── Synchronous action to select a task ─────────────────────────
+// ── Sync action creators ────────────────────────────────────────
 export const setTask = (task) => ({
   type: constants.SET_TASK,
   payload: task
 });
 
-// ── CRUD thunks ─────────────────────────────────────────────────
+export const tasksFetched = (tasks) => ({
+  type: constants.FETCH_TASKS,
+  payload: tasks
+});
+
+export const taskFetched = (task) => ({
+  type: constants.FETCH_TASK,
+  payload: task
+});
+
+export const overdueFetched = (tasks) => ({
+  type: constants.FETCH_OVERDUE,
+  payload: tasks
+});
+
+// ── Async thunks ────────────────────────────────────────────────
 export const fetchTasks = () => async (dispatch) => {
   const res = await fetch(`${API}/tasks`, { headers: authHeaders() });
   const data = await res.json();
-  dispatch({ type: constants.FETCH_TASKS, payload: data });
+  dispatch(tasksFetched(data));
 };
 
 export const fetchTask = (id) => async (dispatch) => {
   const res = await fetch(`${API}/tasks/${id}`, { headers: authHeaders() });
   const data = await res.json();
-  dispatch({ type: constants.FETCH_TASK, payload: data });
+  dispatch(taskFetched(data));
 };
 
 export const addTask = (task) => async (dispatch) => {
@@ -59,16 +74,12 @@ export const toggleComplete = (id, isCompleted = true) => async (dispatch) => {
 };
 
 export const deleteTask = (id) => async (dispatch) => {
-  await fetch(`${API}/tasks/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders()
-  });
+  await fetch(`${API}/tasks/${id}`, { method: 'DELETE', headers: authHeaders() });
   dispatch({ type: constants.DELETE_TASK, payload: id });
 };
 
 export const fetchOverdue = () => async (dispatch) => {
   const res = await fetch(`${API}/overdue`, { headers: authHeaders() });
   const data = await res.json();
-  dispatch({ type: constants.FETCH_OVERDUE, payload: data });
+  dispatch(overdueFetched(data));
 };
-s
