@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Login, Register } from '../actions/authActions';
-import Login from './Login';
-import Register from './Register';
+import { loginUser, registerUser, logout } from '../actions/authActions';
+import Login from './login';
+import Register from './register';
 
 export default function Authentication() {
   const dispatch = useDispatch();
@@ -14,31 +14,27 @@ export default function Authentication() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Decide which tab to show based on URL
   const current = location.pathname.includes('signup') ? 'signup' : 'signin';
 
-  // If we become logged in, redirect to the board
   useEffect(() => {
     if (loggedIn) {
       navigate('/', { replace: true });
     }
   }, [loggedIn, navigate]);
 
-  // Tab click = change hash URL
   const handleSelect = (key) => {
     navigate(`/${key}`, { replace: true });
   };
 
-  // If already logged in, don’t render forms at all
   if (loggedIn) return null;
 
   return (
-    <div className="auth-container">
+    <div className="auth-container d-flex flex-column align-items-center justify-content-center vh-100">
       <Nav
         variant="tabs"
         activeKey={current}
         onSelect={handleSelect}
-        className="mb-4 justify-content-center"
+        className="mb-4"
       >
         <Nav.Item>
           <Nav.Link eventKey="signin">Sign In</Nav.Link>
@@ -48,7 +44,6 @@ export default function Authentication() {
         </Nav.Item>
       </Nav>
 
-      {/* Render the appropriate form */}
       {current === 'signup' ? <Register /> : <Login />}
     </div>
   );

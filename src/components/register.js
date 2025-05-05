@@ -1,6 +1,5 @@
-// src/components/Register.js
 import React, { useState } from 'react';
-import { register } from '../actions/authActions';
+import { registerUser } from '../actions/authActions';
 import { useDispatch } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 
@@ -11,19 +10,15 @@ export default function Register() {
     email: '',
     password: ''
   });
-
   const dispatch = useDispatch();
 
   const updateDetails = (e) => {
-    setDetails({
-      ...details,
-      [e.target.id]: e.target.value
-    });
+    setDetails({ ...details, [e.target.id]: e.target.value });
   };
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(register(details));   // calls our thunk which POSTs to /signup
+    dispatch(registerUser(details));
   };
 
   return (
@@ -38,7 +33,6 @@ export default function Register() {
             onChange={updateDetails}
           />
         </Form.Group>
-
         <Form.Group controlId="username" className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
@@ -48,7 +42,6 @@ export default function Register() {
             onChange={updateDetails}
           />
         </Form.Group>
-
         <Form.Group controlId="email" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -58,7 +51,6 @@ export default function Register() {
             onChange={updateDetails}
           />
         </Form.Group>
-
         <Form.Group controlId="password" className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -68,7 +60,6 @@ export default function Register() {
             onChange={updateDetails}
           />
         </Form.Group>
-
         <Button type="submit" variant="primary" className="w-100">
           Register
         </Button>

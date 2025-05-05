@@ -1,26 +1,19 @@
-// src/components/Login.js
 import React, { useState } from 'react';
-import { login } from '../actions/authActions';   // our existing thunk
+import { loginUser } from '../actions/authActions';
 import { useDispatch } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 
 export default function Login() {
-  const [details, setDetails] = useState({
-    username: '',
-    password: '',
-  });
+  const [details, setDetails] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
 
   const updateDetails = (e) => {
-    setDetails({
-      ...details,
-      [e.target.id]: e.target.value,
-    });
+    setDetails({ ...details, [e.target.id]: e.target.value });
   };
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(login(details.username, details.password));
+    dispatch(loginUser(details.username, details.password));
   };
 
   return (
@@ -36,7 +29,6 @@ export default function Login() {
             onChange={updateDetails}
           />
         </Form.Group>
-
         <Form.Group controlId="password" className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -47,7 +39,6 @@ export default function Login() {
             onChange={updateDetails}
           />
         </Form.Group>
-
         <Button type="submit" variant="primary" className="w-100">
           Sign In
         </Button>
