@@ -1,5 +1,5 @@
 import { Droppable } from 'react-beautiful-dnd';
-import TaskCard from './TaskCard';
+import TaskCard from '../pages/TaskCard';
 
 export default function Column({ id, title, tasks, reload }) {
   return (
