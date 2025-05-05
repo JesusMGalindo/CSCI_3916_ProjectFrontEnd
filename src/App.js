@@ -1,31 +1,39 @@
 // src/App.js
+import React from 'react';
 import './App.css';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+
 import store from './stores/store';
 import Authentication from './components/authentication';
 import TaskBoard      from './components/TaskBoard';
 import TaskDetail     from './components/taskDetail';
 import OverdueList    from './components/overdue';
-import { useSelector } from 'react-redux';
 
-// PrivateRoute reads auth state and redirects if no token
+/**
+ * PrivateRoute guard:
+ * - Reads loggedIn from Redux
+ * - If true, renders children
+ * - If false, redirects to /signin
+ */
 function PrivateRoute({ children }) {
-  const token = useSelector((s) => s.auth.loggedIn);  // or s.auth.token if you store it
-  return token ? children : <Navigate to="/signin" replace />;
+  const loggedIn = useSelector((s) => s.auth.loggedIn);
+  return loggedIn
+    ? children
+    : <Navigate to="/signin" replace />;
 }
 
-function App() {
+export default function App() {
   return (
     <Provider store={store}>
       <HashRouter>
         <div className="App">
           <Routes>
-            {/* Auth pages (always public) */}
-            <Route path="/signin/*"  element={<Authentication />} />
-            <Route path="/signup/*"  element={<Authentication />} />
+            {/* PUBLIC: Sign-in / Sign-up pages */}
+            <Route path="/signin/*" element={<Authentication />} />
+            <Route path="/signup/*" element={<Authentication />} />
 
-            {/* Protected flows */}
+            {/* PROTECTED: Board, Detail, Overdue */}
             <Route
               path="/"
               element={
@@ -59,13 +67,18 @@ function App() {
               }
             />
 
-            {/* Any other path → sign in */}
-            <Route path="*" element={<Navigate to="/signin" replace />} />
+            {/* CATCH-ALL redirects unauth to Signin, auth’d to Board */}
+            <Route
+              path="*"
+              element={
+                useSelector((s) => s.auth.loggedIn)
+                  ? <Navigate to="/" replace />
+                  : <Navigate to="/signin" replace />
+              }
+            />
           </Routes>
         </div>
       </HashRouter>
     </Provider>
   );
 }
-
-export default App;
