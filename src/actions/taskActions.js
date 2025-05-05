@@ -1,42 +1,37 @@
 // src/actions/taskActions.js
 import constants from '../constants/actionTypes';
+
 const API = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
-function tasksFetched(tasks) {
-  return { type: constants.FETCH_TASKS, payload: tasks };
-}
-function taskFetched(task) {
-  return { type: constants.FETCH_TASK, payload: task };
-}
-function overdueFetched(tasks) {
-  return { type: constants.FETCH_OVERDUE, payload: tasks };
-}
+// Helper to build auth headers
+const authHeaders = () => ({
+  'Content-Type': 'application/json',
+  Authorization: `JWT ${localStorage.getItem('token')}`
+});
 
-function authHeaders() {
-  const token = localStorage.getItem('token');
-  return { Authorization: `JWT ${token}` };
-}
+// ── Synchronous action to select a task ─────────────────────────
+export const setTask = (task) => ({
+  type: constants.SET_TASK,
+  payload: task
+});
 
+// ── CRUD thunks ─────────────────────────────────────────────────
 export const fetchTasks = () => async (dispatch) => {
-  const res = await fetch(`${API}/tasks`, {
-    headers: { 'Content-Type': 'application/json', ...authHeaders() }
-  });
+  const res = await fetch(`${API}/tasks`, { headers: authHeaders() });
   const data = await res.json();
-  dispatch(tasksFetched(data));
+  dispatch({ type: constants.FETCH_TASKS, payload: data });
 };
 
 export const fetchTask = (id) => async (dispatch) => {
-  const res = await fetch(`${API}/tasks/${id}`, {
-    headers: authHeaders()
-  });
+  const res = await fetch(`${API}/tasks/${id}`, { headers: authHeaders() });
   const data = await res.json();
-  dispatch(taskFetched(data));
+  dispatch({ type: constants.FETCH_TASK, payload: data });
 };
 
 export const addTask = (task) => async (dispatch) => {
   const res = await fetch(`${API}/tasks`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    headers: authHeaders(),
     body: JSON.stringify(task)
   });
   const data = await res.json();
@@ -46,7 +41,7 @@ export const addTask = (task) => async (dispatch) => {
 export const updateTask = (id, updates) => async (dispatch) => {
   const res = await fetch(`${API}/tasks/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    headers: authHeaders(),
     body: JSON.stringify(updates)
   });
   const data = await res.json();
@@ -56,7 +51,7 @@ export const updateTask = (id, updates) => async (dispatch) => {
 export const toggleComplete = (id, isCompleted = true) => async (dispatch) => {
   const res = await fetch(`${API}/tasks/${id}/complete`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    headers: authHeaders(),
     body: JSON.stringify({ isCompleted })
   });
   const data = await res.json();
@@ -74,5 +69,6 @@ export const deleteTask = (id) => async (dispatch) => {
 export const fetchOverdue = () => async (dispatch) => {
   const res = await fetch(`${API}/overdue`, { headers: authHeaders() });
   const data = await res.json();
-  dispatch(overdueFetched(data));
+  dispatch({ type: constants.FETCH_OVERDUE, payload: data });
 };
+s
