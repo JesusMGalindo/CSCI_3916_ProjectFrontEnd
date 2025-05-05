@@ -1,26 +1,8 @@
-/* index.css – global resets and background */
-
-* {
-  box-sizing: border-box;
-}
-
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: system-ui, sans-serif;
-  background: #f5f6fa;
-}
-
-/* Link styles */
-a {
-  color: #4b7bec;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+body{margin:0;font-family:sans-serif;background:#f5f6fa}
+header{display:flex;align-items:center;gap:1rem;padding:1rem;background:#34495e;color:#fff}
+.board{display:flex;gap:1rem;padding:1rem;overflow-x:auto}
+.column{flex:1;min-width:250px;background:#ecf0f1;border-radius:8px;padding:0.5rem}
+.task{background:#fff;margin-bottom:0.5rem;padding:0.5rem;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.auth{display:flex;flex-direction:column;gap:0.5rem;padding:2rem;max-width:300px;margin:4rem auto;background:#ecf0f1;border-radius:8px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center}
+.modal .card{background:#fff;padding:1rem;border-radius:8px;display:flex;flex-direction:column;gap:0.5rem}
