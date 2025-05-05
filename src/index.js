@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';  // Bootstrap styles
+import './index.css';                            // Your global CSS
 
-// CRA creates an element with id="root" in public/index.html
+import App from './App';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

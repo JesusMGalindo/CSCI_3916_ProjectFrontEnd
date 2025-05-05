@@ -1,88 +1,33 @@
-/* Basic styling for Task Manager */
+/* src/App.css */
 
-body {
-  font-family: system-ui, sans-serif;
-  margin: 0;
-  background: #f5f6fa;
-}
-
-main {
+.App {
   padding: 1.5rem;
 }
 
-.login, .register {
-  max-width: 360px;
-  margin: 4rem auto;
-  background: #fff;
-  border-radius: 8px;
-  padding: 2rem 2.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.login h2,
-.register h2 {
-  margin-top: 0;
-  text-align: center;
-}
-
-form input {
-  width: 100%;
-  padding: 0.6rem 0.8rem;
-  margin-bottom: 1rem;
-  border: 1px solid #dcdde1;
-  border-radius: 4px;
-}
-
-button {
-  width: 100%;
-  padding: 0.7rem;
-  background: #4b7bec;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #3867d6;
-}
-
-/* --- Task board --- */
-
+/* Task board layout */
 .task-board {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-.task-board section {
-  flex: 1;
+/* Column styling */
+.todo-column,
+.done-column {
   background: #fff;
   border-radius: 8px;
   padding: 1rem;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  min-height: 300px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+/* Column headers */
 .task-board h3 {
   margin-top: 0;
   text-align: center;
 }
 
-.task-card {
-  background: #fdfdfd;
-  border: 1px solid #e1e4ea;
-  border-radius: 6px;
-  padding: 0.8rem;
-  margin-bottom: 0.8rem;
-  cursor: grab;
+/* Add-task & overdue buttons (in header) */
+.task-board header .btn {
+  margin-left: 0.5rem;
 }
-
-.task-card h4 {
-  margin: 0 0 0.4rem 0;
-  font-size: 1rem;
-}
-
-.priority.low    { color: #1dd1a1; }
-.priority.medium { color: #ffa502; }
-.priority.high   { color: #ff4757; }

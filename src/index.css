@@ -1,4 +1,4 @@
-/* index.css – global resets / overrides */
+/* index.css – global resets and background */
 
 * {
   box-sizing: border-box;
@@ -6,8 +6,16 @@
 
 html, body, #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
+body {
+  font-family: system-ui, sans-serif;
+  background: #f5f6fa;
+}
+
+/* Link styles */
 a {
   color: #4b7bec;
   text-decoration: none;
