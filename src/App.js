@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import './App.css';
 import { Provider, useSelector } from 'react-redux';
@@ -10,12 +9,6 @@ import TaskBoard      from './components/TaskBoard';
 import TaskDetail     from './components/taskDetail';
 import OverdueList    from './components/overdue';
 
-/**
- * PrivateRoute guard:
- * - Reads loggedIn from Redux
- * - If true, renders children
- * - If false, redirects to /signin
- */
 function PrivateRoute({ children }) {
   const loggedIn = useSelector((s) => s.auth.loggedIn);
   return loggedIn
@@ -29,11 +22,11 @@ export default function App() {
       <HashRouter>
         <div className="App">
           <Routes>
-            {/* PUBLIC: Sign-in / Sign-up pages */}
+            {/* Public auth pages */}
             <Route path="/signin/*" element={<Authentication />} />
             <Route path="/signup/*" element={<Authentication />} />
 
-            {/* PROTECTED: Board, Detail, Overdue */}
+            {/* Protected routes */}
             <Route
               path="/"
               element={
@@ -67,14 +60,10 @@ export default function App() {
               }
             />
 
-            {/* CATCH-ALL redirects unauth to Signin, auth’d to Board */}
+            {/* Fallback */}
             <Route
               path="*"
-              element={
-                useSelector((s) => s.auth.loggedIn)
-                  ? <Navigate to="/" replace />
-                  : <Navigate to="/signin" replace />
-              }
+              element={<Navigate to={useSelector((s) => s.auth.loggedIn) ? "/" : "/signin"} replace />}
             />
           </Routes>
         </div>
