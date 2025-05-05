@@ -2,12 +2,18 @@
 import './App.css';
 import { Provider } from 'react-redux';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-
 import store from './stores/store';
 import Authentication from './components/authentication';
 import TaskBoard      from './components/TaskBoard';
 import TaskDetail     from './components/taskDetail';
 import OverdueList    from './components/overdue';
+import { useSelector } from 'react-redux';
+
+// PrivateRoute reads auth state and redirects if no token
+function PrivateRoute({ children }) {
+  const token = useSelector((s) => s.auth.loggedIn);  // or s.auth.token if you store it
+  return token ? children : <Navigate to="/signin" replace />;
+}
 
 function App() {
   return (
@@ -15,20 +21,46 @@ function App() {
       <HashRouter>
         <div className="App">
           <Routes>
-            {/* Main board */}
-            <Route path="/"          element={<TaskBoard />} />
-            <Route path="/tasks"     element={<TaskBoard />} />
-            <Route path="/tasks/:id" element={<TaskDetail />} />
+            {/* Auth pages (always public) */}
+            <Route path="/signin/*"  element={<Authentication />} />
+            <Route path="/signup/*"  element={<Authentication />} />
 
-            {/* Overdue list */}
-            <Route path="/overdue"   element={<OverdueList />} />
+            {/* Protected flows */}
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <TaskBoard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/tasks"
+              element={
+                <PrivateRoute>
+                  <TaskBoard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/tasks/:id"
+              element={
+                <PrivateRoute>
+                  <TaskDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/overdue"
+              element={
+                <PrivateRoute>
+                  <OverdueList />
+                </PrivateRoute>
+              }
+            />
 
-            {/* Auth */}
-            <Route path="/signin"  element={<Authentication />} />
-            <Route path="/signup"  element={<Authentication />} />
-
-            {/* Fallback */}
-            <Route path="*"          element={<Navigate to="/signin" replace />} />
+            {/* Any other path → sign in */}
+            <Route path="*" element={<Navigate to="/signin" replace />} />
           </Routes>
         </div>
       </HashRouter>
